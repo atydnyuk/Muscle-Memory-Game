@@ -61,8 +61,6 @@ window.onload = function () {
 
     //automatically play the loading scene
     Crafty.scene("loading");
-
-
 	
     Crafty.scene("MainMenu", function() {
         targetsHit=0;
@@ -84,7 +82,6 @@ window.onload = function () {
             .css({'color':"white","text-align":"center"})
 			.bind('Click',function() {Crafty.scene("Drill")})
 			.areaMap([0,0], [150,0], [150,50], [0,50]);
-
 	});
 
 	Crafty.scene("DrillResults", function() {
@@ -275,10 +272,6 @@ window.onload = function () {
                 }, 200);
         }
     });
-
-
-    
-
 
     Crafty.c('Grid', {
         _cellSize: spriteDim,
@@ -476,7 +469,6 @@ window.onload = function () {
             .text(function () { return ""+time})
             .css({'color':"white","text-align":"center"});
 	}
-
 
 	//Drill functions
 	function resetCounters() {

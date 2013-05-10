@@ -18,6 +18,7 @@ var theAcctext;
 var timer;
 var time = 0;
 var timerText;
+var timerText2;
 
 //Timed Drill variables
 var aimingCenter = true;
@@ -35,17 +36,9 @@ window.onload = function () {
     
     //turn the sprite map into usable components
     Crafty.sprite(spriteDim, "sprite.png", {
-        grass1: [0, 0],
-        grass2: [1, 0],
-        grass3: [2, 0],
-        grass4: [3, 0],
-        flower: [0, 1],
-        bush1: [0, 2],
-        bush2: [1, 2],
-		bush32: [2, 2],
-        player: [0, 3],
-        enemy: [0, 3],
-        banana: [4, 0],
+        def_target: [0, 0],
+        live_target: [1, 0],
+        hit_target: [2, 0],
         empty: [4, 0]
     });
 
@@ -86,7 +79,7 @@ window.onload = function () {
 			.bind('Click',function() {Crafty.scene("FreePlay")})
             .areaMap([0,0], [150,0], [150,50], [0,50]);    
 
-		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 250, y: 550 , z:900 })
+		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 250, y: 450 , z:900 })
             .text(function () { return "Timed Drill"})
             .css({'color':"white","text-align":"center"})
 			.bind('Click',function() {Crafty.scene("Drill")})
@@ -117,23 +110,24 @@ window.onload = function () {
     //method to generate the map
     function generateWorld() {
         //loop through all tiles
+		var putTile=false;
         for (var i = 0; i < width; i++) {
             for (var j = 0; j < height; j++) {
 				//This creates the "+"
                 if ((i==width/2 && j % 4===0 && j>0) || (j==width/2 && i % 4===0 && i>0) ) {
 					console.log("i: "+i+" j: "+j);
-					targetArray[i][j] = Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, bush" + Crafty.math.randomInt(1, 2))
+					targetArray[i][j] = Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, def_target")
 						.attr({ x: i * spriteDim, y: j * spriteDim, z: 2 })
 						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
-                } 
+				} 
 				
 				//This creates the "x"
 				if ( ((i+j)%8==0) && ((i-j)===0 || ((i+j)===(width)&& i%4==0)) && i>0 && !(i==(width/2)&&j==(height/2))) {
-                    targetArray[i][j] = Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, bush" + Crafty.math.randomInt(1, 2))
+                    targetArray[i][j] = Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, def_target")
 						.attr({ x: i * spriteDim, y: j * spriteDim, z: 2 })
 						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
-                } 
-            }
+				} 	
+			}
         }
 
     }
@@ -146,14 +140,14 @@ window.onload = function () {
 				//This creates the "+"
                 if ((i==width/2 && j % 4===0 && j>0) || (j==width/2 && i % 4===0 && i>0) ) {
 					console.log("i: "+i+" j: "+j);
-					targetArray[i][j] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, bush" + Crafty.math.randomInt(1, 2))
+					targetArray[i][j] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, def_target")
 						.attr({ x: i * spriteDim, y: j * spriteDim, z: 2 })
 						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
                 } 
 				
 				//This creates the "x"
 				if ( ((i+j)%8==0) && ((i-j)===0 || ((i+j)===(width)&& i%4==0)) && i>0 && !(i==(width/2)&&j==(height/2))) {
-                    targetArray[i][j] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, bush" + Crafty.math.randomInt(1, 2))
+                    targetArray[i][j] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, def_target")
 						.attr({ x: i * spriteDim, y: j * spriteDim, z: 2 })
 						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
                 } 
@@ -187,16 +181,20 @@ window.onload = function () {
 						aimingCenter=false;
 					
 						//make the center invalid
-						targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, bush" + Crafty.math.randomInt(1, 2))
+						targetArray[width/2][height/2] = 
+							Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, def_target")
 							.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 2 })
 							.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+						
+						Crafty.e("HitDie").attr({ z:9000 }).col(this.col()).row(this.row())
 						
 						//set the next target
 						var result = drillTargets[currentAim];
 						var i = result[0];
 						var j = result[1];
 						targetArray[i][j].destroy();
-						targetArray[i][j] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, banana")
+						targetArray[i][j] = 
+							Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
 							.attr({ x: i * spriteDim, y: j * spriteDim, z: 200 })
 							.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
 					} else {
@@ -213,7 +211,7 @@ window.onload = function () {
 							var oldi = oldtarget[0];
 							var oldj = oldtarget[1];
 							targetArray[oldi][oldj].destroy();
-							targetArray[oldi][oldj] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, bush" + Crafty.math.randomInt(1, 2))
+							targetArray[oldi][oldj] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, def_target")
 								.attr({ x: oldi * spriteDim, y: oldj * spriteDim, z: 2 })
 								.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
 							
@@ -222,7 +220,7 @@ window.onload = function () {
 							
 							//make the center our current target
 							targetArray[width/2][height/2].destroy();
-							targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, banana")
+							targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
 								.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 2 })
 								.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
 						}
@@ -239,26 +237,6 @@ window.onload = function () {
             this.requires('Grid')
 				.bind('MouseDown', function() {
                     updateText();
-                    //since we missed the target we were aiming for
-					//we wipe it.
-					//replace the target we hit with an invalid one
-					var oldtarget = drillTargets[currentAim];
-					var oldi = oldtarget[0];
-					var oldj = oldtarget[1];
-					targetArray[oldi][oldj].destroy();
-					targetArray[oldi][oldj] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, bush" + Crafty.math.randomInt(1, 2))
-						.attr({ x: oldi * spriteDim, y: oldj * spriteDim, z: 2 })
-						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
-					
-					
-					//we reroute back to center
-					aimingCenter=true;
-					
-					//make the center a target
-					targetArray[width/2][height/2].destroy();
-					targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, banana")
-						.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 2 })
-						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
 				});
         },
 	});
@@ -268,7 +246,7 @@ window.onload = function () {
 
     Crafty.c('HitRespawn', {
         init: function() {
-            this.requires("2D, DOM, SpriteAnimation, bush32, Grid, Mouse")
+            this.requires("2D, DOM, SpriteAnimation, hit_target, Grid, Mouse")
                 .bind('MouseDown', function() {
                     this.destroy();
                     targetsHit++;
@@ -276,7 +254,7 @@ window.onload = function () {
                 .areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim])
                 .timeout(function() {
                     this.destroy();
-                    Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, bush" + Crafty.math.randomInt(1, 2))
+                    Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, def_target")
 						.attr({ z:9000 }).col(this.col()).row(this.row())
 						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
                 }, 200);
@@ -286,7 +264,7 @@ window.onload = function () {
 
     Crafty.c('HitDie', {
         init: function() {
-            this.requires("2D, DOM, SpriteAnimation, bush32, Grid, Mouse")
+            this.requires("2D, DOM, SpriteAnimation, hit_target, Grid, Mouse")
                 .bind('MouseDown', function() {
                     this.destroy();
                     targetsHit++;
@@ -368,19 +346,19 @@ window.onload = function () {
 
 	Crafty.scene("Drill", function () {
         Crafty.e("2D, DOM, Text").attr({ w: 350, h: 50, x: 150, y: 150 , z:900 })
-            .text(function () { return "Click below to run a timed drill. For these you want to click the yellow target. Anything else will be a miss. The faster the time, the better. =]"})
+            .text(function () { return "Click below to run a timed drill. For these you want to click the green target. Anything else will be a miss. The faster the time, the better. =]"})
             .css({'color':"white","text-align":"center"});
 		
 		Crafty.e("2D, DOM, Text, Mouse")
-			.attr({ w: 150, h: 50, x: 250, y: 350 , z:900 })
-            .text(function () { return "Drill 1: Simple"})
+			.attr({ w: 250, h: 50, x: 200, y: 350 , z:900 })
+            .text(function () { return "1: Simple"})
 			.bind('Click', function() {Crafty.scene("Drill1")})
 			.areaMap([0,0],[150,0],[150,50],[0,50])
             .css({'color':"white","text-align":"center"});
 
 		Crafty.e("2D, DOM, Text, Mouse")
-			.attr({ w: 150, h: 50, x: 250, y: 450 , z:900 })
-            .text(function () { return "Drill 2: Short Progression"})
+			.attr({ w: 250, h: 50, x: 200, y: 400 , z:900 })
+            .text(function () { return "2: Short Progression"})
 			.bind('Click', function() {Crafty.scene("Drill2")})
 			.areaMap([0,0],[150,0],[150,50],[0,50])
             .css({'color':"white","text-align":"center"});
@@ -391,7 +369,7 @@ window.onload = function () {
 		drillTargets = drill1Targets;
 		generateDrillWorld();
 		resetCounters();
-				
+		
 		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 10, y: 10 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});;
@@ -399,9 +377,14 @@ window.onload = function () {
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});
 		
+		timerText = Crafty.e("2D,DOM,Text")
+			.attr({ w: 150, h: 50, x: 300, y: 10 , z:900 })
+            .text(function () { return "Time Elapsed: "})
+            .css({'color':"white","text-align":"center"});
+		
 		newTimer();
 		targetArray[width/2][height/2].destroy();
-		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, banana")
+		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
 			.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 200 })
 			.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
         updateText();
@@ -426,10 +409,16 @@ window.onload = function () {
 		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, x: 10, y: 50 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});
+
+		timerText = Crafty.e("2D,DOM,Text")
+			.attr({ w: 150, h: 50, x: 300, y: 10 , z:900 })
+            .text(function () { return "Time Elapsed: "})
+            .css({'color':"white","text-align":"center"});
+
 		
 		newTimer();
 		targetArray[width/2][height/2].destroy();
-		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, banana")
+		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
 			.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 200 })
 			.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
         updateText();
@@ -476,16 +465,15 @@ window.onload = function () {
 		time+=1;
 		timer = window.setTimeout(incrementTimer,10);
 		updateTime();
-		console.log("The time is "+time)
 	}
 
 	function updateTime() {
-		if (timerText!=null) {
-			timerText.destroy();
+		if (timerText2!=null) {
+			timerText2.destroy();
 		}
-		timerText = Crafty.e("2D,DOM,Text")
-			.attr({ w: 150, h: 50, x: 300, y: 10 , z:900 })
-            .text(function () { return "Time Elapsed: "+time})
+		timerText2 = Crafty.e("2D,DOM,Text")
+			.attr({ w: 150, h: 50, x: 300, y: 50 , z:900 })
+            .text(function () { return ""+time})
             .css({'color':"white","text-align":"center"});
 	}
 

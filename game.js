@@ -14,10 +14,6 @@ for (var i=0; i< width; i++) {
 var theHittext;
 var theAcctext;
 
-
-
-
-
 //Timer variables
 var timer;
 var time = 0;
@@ -30,7 +26,7 @@ var drillTargets;
 
 //Drill runs
 var drill1Targets = [[20,16],[16,20],[20,16],[16,20]]
-
+var drill2Targets = [[20,16],[20,12],[20,8],[20,4],[16,20],[12,20],[8,20],[4,20],[20,24],[20,28],[20,32],[20,36],[24,20],[28,20],[32,20],[36,20]]
 
 window.onload = function () {
     //start crafty
@@ -377,8 +373,15 @@ window.onload = function () {
 		
 		Crafty.e("2D, DOM, Text, Mouse")
 			.attr({ w: 150, h: 50, x: 250, y: 350 , z:900 })
-            .text(function () { return "Drill 1: Flicks"})
+            .text(function () { return "Drill 1: Simple"})
 			.bind('Click', function() {Crafty.scene("Drill1")})
+			.areaMap([0,0],[150,0],[150,50],[0,50])
+            .css({'color':"white","text-align":"center"});
+
+		Crafty.e("2D, DOM, Text, Mouse")
+			.attr({ w: 150, h: 50, x: 250, y: 450 , z:900 })
+            .text(function () { return "Drill 2: Short Progression"})
+			.bind('Click', function() {Crafty.scene("Drill2")})
 			.areaMap([0,0],[150,0],[150,50],[0,50])
             .css({'color':"white","text-align":"center"});
 		
@@ -386,6 +389,34 @@ window.onload = function () {
 
 	Crafty.scene("Drill1", function() {
 		drillTargets = drill1Targets;
+		generateDrillWorld();
+		resetCounters();
+				
+		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 10, y: 10 })
+			.text(function () { return "Targets Hit: "+targetsHit})
+			.css({"color":"white;"});;
+		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, x: 10, y: 50 })
+			.text(function () { return "Targets Hit: "+targetsHit})
+			.css({"color":"white;"});
+		
+		newTimer();
+		targetArray[width/2][height/2].destroy();
+		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, banana")
+			.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 200 })
+			.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+        updateText();
+		recording=true;
+        document.body.onmousedown = function() {
+            if (recording) {
+				timesShot++;
+				Crafty.audio.play("skorpion");
+				updateText();
+			}
+        };
+	});
+
+	Crafty.scene("Drill2", function() {
+		drillTargets = drill2Targets;
 		generateDrillWorld();
 		resetCounters();
 				

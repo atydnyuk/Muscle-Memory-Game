@@ -26,8 +26,10 @@ var currentAim=0;
 var drillTargets;
 
 //Drill runs
-var drill1Targets = [[20,16],[16,20],[20,16],[16,20]]
-var drill2Targets = [[20,16],[20,12],[20,8],[20,4],[16,20],[12,20],[8,20],[4,20],[20,24],[20,28],[20,32],[20,36],[24,20],[28,20],[32,20],[36,20]]
+var drill1Targets = [[20,16],[16,20],[20,16],[16,20]];
+var drill2Targets = [[20,16],[20,12],[20,8],[20,4],[16,20],[12,20],[8,20],[4,20],[20,24],[20,28],[20,32],[20,36],[24,20],[28,20],[32,20],[36,20]];
+var drill3Targets = [[20,4],[4,20],[20,36],[36,20],[20,4],[4,20],[20,36],[36,20],[20,4],[4,20],[20,36],[36,20],[20,4],[4,20],[20,36],[36,20],[20,4],[4,20],[20,36],[36,20]];
+
 
 window.onload = function () {
     //start crafty
@@ -238,9 +240,6 @@ window.onload = function () {
         },
 	});
 
-	
-
-
     Crafty.c('HitRespawn', {
         init: function() {
             this.requires("2D, DOM, SpriteAnimation, hit_target, Grid, Mouse")
@@ -355,9 +354,20 @@ window.onload = function () {
 			.bind('Click', function() {Crafty.scene("Drill2")})
 			.areaMap([0,0],[150,0],[150,50],[0,50])
             .css({'color':"white","text-align":"center"});
-		
+
+		Crafty.e("2D, DOM, Text, Mouse")
+			.attr({ w: 250, h: 50, x: 200, y: 450 , z:900 })
+            .text(function () { return "3: Long Flicks"})
+			.bind('Click', function() {Crafty.scene("Drill3")})
+			.areaMap([0,0],[150,0],[150,50],[0,50])
+            .css({'color':"white","text-align":"center"});
     });
 
+	
+	/**
+	 * These definitely need to get moved to just one function.
+	 * I will do this soon. Hopefully.
+	 **/
 	Crafty.scene("Drill1", function() {
 		drillTargets = drill1Targets;
 		generateDrillWorld();
@@ -393,6 +403,41 @@ window.onload = function () {
 
 	Crafty.scene("Drill2", function() {
 		drillTargets = drill2Targets;
+		generateDrillWorld();
+		resetCounters();
+				
+		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 10, y: 10 })
+			.text(function () { return "Targets Hit: "+targetsHit})
+			.css({"color":"white;"});;
+		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, x: 10, y: 50 })
+			.text(function () { return "Targets Hit: "+targetsHit})
+			.css({"color":"white;"});
+
+		timerText = Crafty.e("2D,DOM,Text")
+			.attr({ w: 150, h: 50, x: 300, y: 10 , z:900 })
+            .text(function () { return "Time Elapsed: "})
+            .css({'color':"white","text-align":"center"});
+
+		
+		newTimer();
+		targetArray[width/2][height/2].destroy();
+		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
+			.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 200 })
+			.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+        updateText();
+		recording=true;
+        document.body.onmousedown = function() {
+            if (recording) {
+				timesShot++;
+				Crafty.audio.play("skorpion");
+				updateText();
+			}
+        };
+	});
+
+	
+	Crafty.scene("Drill3", function() {
+		drillTargets = drill3Targets;
 		generateDrillWorld();
 		resetCounters();
 				
@@ -478,6 +523,3 @@ window.onload = function () {
 		timesShot=0.0;
 	}
 };
-
-
-

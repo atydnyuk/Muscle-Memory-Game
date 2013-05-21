@@ -14,6 +14,9 @@ for (var i=0; i< width; i++) {
 var theHittext;
 var theAcctext;
 
+//Sound variable
+var sound=true;
+
 //Timer variables
 var timer;
 var time = 0;
@@ -73,7 +76,7 @@ window.onload = function () {
             .css({'color':"white","text-align":"center"});
 
         Crafty.e("2D,DOM,Text,Mouse")
-            .attr({w:150,h:50,x:(265),y:(400),z:900})
+            .attr({w:150,h:50,x:(270),y:(400),z:900})
         //.image("Button1.png")
 			.text(function() { return "Free Practice"})
 			.bind('Click',function() {Crafty.scene("FreePlay")})
@@ -84,6 +87,24 @@ window.onload = function () {
             .css({'color':"white","text-align":"center"})
 			.bind('Click',function() {Crafty.scene("Drill")})
 			.areaMap([0,0], [150,0], [150,50], [0,50]);
+
+
+		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 10, y: 600 , z:900 })
+            .text(function () { return "Toggle Sound: "})
+            .css({'color':"white","text-align":"center"})
+			.bind('Click',function() {sound=!sound;})
+			.areaMap([0,0], [150,0], [150,50], [0,50]);
+		if (sound) {
+			Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 90, y: 600 , z:900 })
+				.text(function () { return "On"})
+				.css({'color':"white","text-align":"center"})
+				.areaMap([0,0], [150,0], [150,50], [0,50]);
+		} else {
+			Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 90, y: 600 , z:900 })
+				.text(function () { return "Off"})
+				.css({'color':"white","text-align":"center"})
+				.areaMap([0,0], [150,0], [150,50], [0,50]);
+		}
 	});
 
 	Crafty.scene("DrillResults", function() {
@@ -329,7 +350,9 @@ window.onload = function () {
         document.body.onmousedown = function() {
             if (recording) {
 				timesShot++;
-				Crafty.audio.play("skorpion");
+				if (sound) {
+					Crafty.audio.play("skorpion");
+				}
 				updateText();
 			}
         };
@@ -395,7 +418,9 @@ window.onload = function () {
         document.body.onmousedown = function() {
             if (recording) {
 				timesShot++;
-				Crafty.audio.play("skorpion");
+				if (sound) {
+					Crafty.audio.play("skorpion");
+				}
 				updateText();
 			}
         };
@@ -429,7 +454,9 @@ window.onload = function () {
         document.body.onmousedown = function() {
             if (recording) {
 				timesShot++;
-				Crafty.audio.play("skorpion");
+				if (sound) {
+					Crafty.audio.play("skorpion");
+				}
 				updateText();
 			}
         };
@@ -464,7 +491,9 @@ window.onload = function () {
         document.body.onmousedown = function() {
             if (recording) {
 				timesShot++;
-				Crafty.audio.play("skorpion");
+				if (sound) {
+					Crafty.audio.play("skorpion");
+				}
 				updateText();
 			}
         };

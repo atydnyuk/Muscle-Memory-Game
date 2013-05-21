@@ -16,6 +16,7 @@ var theAcctext;
 
 //Sound variable
 var sound=true;
+var soundText;
 
 //Timer variables
 var timer;
@@ -89,23 +90,15 @@ window.onload = function () {
 			.areaMap([0,0], [150,0], [150,50], [0,50]);
 
 
-		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 10, y: 600 , z:900 })
-            .text(function () { return "Toggle Sound: "})
+		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 0, y: 600 , z:900 })
+            .text(function () { return "Sound: "})
             .css({'color':"white","text-align":"center"})
-			.bind('Click',function() {sound=!sound;})
+			.bind('Click',function() {sound=!sound;generateSoundText();})
 			.areaMap([0,0], [150,0], [150,50], [0,50]);
-		if (sound) {
-			Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 90, y: 600 , z:900 })
-				.text(function () { return "On"})
-				.css({'color':"white","text-align":"center"})
-				.areaMap([0,0], [150,0], [150,50], [0,50]);
-		} else {
-			Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 90, y: 600 , z:900 })
-				.text(function () { return "Off"})
-				.css({'color':"white","text-align":"center"})
-				.areaMap([0,0], [150,0], [150,50], [0,50]);
-		}
+		generateSoundText();
 	});
+
+	
 
 	Crafty.scene("DrillResults", function() {
 		timesShot++;
@@ -542,6 +535,21 @@ window.onload = function () {
 			.attr({ w: 150, h: 50, x: 300, y: 50 , z:900 })
             .text(function () { return ""+time})
             .css({'color':"white","text-align":"center"});
+	}
+
+	function generateSoundText() {
+		if (soundText!=null) {
+			soundText.destroy();
+		}
+		if (sound) {
+			soundText = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 50, y: 600 , z:900 })
+				.text(function () { return "On"})
+				.css({'color':"white","text-align":"center"})
+		} else {
+			soundText = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 50, y: 600 , z:900 })
+				.text(function () { return "Off"})
+				.css({'color':"white","text-align":"center"})
+		}
 	}
 
 	//Drill functions

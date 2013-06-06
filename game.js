@@ -72,14 +72,14 @@ window.onload = function () {
         targetsHit=0;
         timesShot=0;
 		recording=false;
+		endDrill();
         Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 250, y: 150 , z:900 })
             .text(function () { return "Welcome to Muscle Memory Training"})
             .css({'color':"white","text-align":"center"});
 
         Crafty.e("2D,DOM,Text,Mouse")
             .attr({w:150,h:50,x:(270),y:(400),z:900})
-        //.image("Button1.png")
-			.text(function() { return "Free Practice"})
+        	.text(function() { return "Free Practice"})
 			.bind('Click',function() {Crafty.scene("FreePlay")})
             .areaMap([0,0], [150,0], [150,50], [0,50]);    
 
@@ -103,7 +103,10 @@ window.onload = function () {
 	Crafty.scene("DrillResults", function() {
 		timesShot++;
 		Crafty.e("2D, DOM, Text").attr({ w: 170, h: 150, x: 250, y: 150 , z:900 })
-            .text(function () { return "<p>Drill Results: <br> Hits: "+targetsHit+"<br>Accuracy: "+((targetsHit/timesShot)*100).toFixed(2)+"<br>Time Lapsed: "+time+"</p>"})
+            .text(function () { 
+				return "<p>Drill Results: <br> Hits: "+targetsHit+
+					"<br>Accuracy: "+((targetsHit/timesShot)*100).toFixed(2)
+					+"<br>Time Lapsed: "+time+"</p>"})
             .css({'color':"white","text-align":"center"});
 		
 		Crafty.e("2D, DOM, Text, Mouse")
@@ -377,6 +380,16 @@ window.onload = function () {
 			.bind('Click', function() {Crafty.scene("Drill3")})
 			.areaMap([0,0],[150,0],[150,50],[0,50])
             .css({'color':"white","text-align":"center"});
+
+		Crafty.e("2D, DOM, Text, Mouse")
+			.attr({w: 150, h: 50, 
+				   x:((width*spriteDim)-(width*5)), 
+				   y:((height*spriteDim)-(height)), 
+				   z:900 })
+            .text(function () { return "Main Menu"})
+			.bind('Click',function () {Crafty.scene("MainMenu")})
+			.areaMap([0,0],[150,0],[150,50],[0,50])
+            .css({'color':"white","text-align":"center"});
     });
 
 	
@@ -399,6 +412,16 @@ window.onload = function () {
 		timerText = Crafty.e("2D,DOM,Text")
 			.attr({ w: 150, h: 50, x: 300, y: 10 , z:900 })
             .text(function () { return "Time Elapsed: "})
+            .css({'color':"white","text-align":"center"});
+
+		Crafty.e("2D, DOM, Text, Mouse")
+			.attr({w: 150, h: 50, 
+				   x:((width*spriteDim)-(width*5)), 
+				   y:((height*spriteDim)-(height)), 
+				   z:900 })
+            .text(function () { return "Main Menu"})
+			.bind('Click',function () {Crafty.scene("MainMenu")})
+			.areaMap([0,0],[150,0],[150,50],[0,50])
             .css({'color':"white","text-align":"center"});
 		
 		newTimer();
@@ -436,7 +459,16 @@ window.onload = function () {
             .text(function () { return "Time Elapsed: "})
             .css({'color':"white","text-align":"center"});
 
-		
+		Crafty.e("2D, DOM, Text, Mouse")
+			.attr({w: 150, h: 50, 
+				   x:((width*spriteDim)-(width*5)), 
+				   y:((height*spriteDim)-(height)), 
+				   z:900 })
+            .text(function () { return "Main Menu"})
+			.bind('Click',function () {Crafty.scene("MainMenu")})
+			.areaMap([0,0],[150,0],[150,50],[0,50])
+            .css({'color':"white","text-align":"center"});
+
 		newTimer();
 		targetArray[width/2][height/2].destroy();
 		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
@@ -473,6 +505,15 @@ window.onload = function () {
             .text(function () { return "Time Elapsed: "})
             .css({'color':"white","text-align":"center"});
 
+		Crafty.e("2D, DOM, Text, Mouse")
+			.attr({w: 150, h: 50, 
+				   x:((width*spriteDim)-(width*5)), 
+				   y:((height*spriteDim)-(height)), 
+				   z:900 })
+            .text(function () { return "Main Menu"})
+			.bind('Click',function () {Crafty.scene("MainMenu")})
+			.areaMap([0,0],[150,0],[150,50],[0,50])
+            .css({'color':"white","text-align":"center"});
 		
 		newTimer();
 		targetArray[width/2][height/2].destroy();

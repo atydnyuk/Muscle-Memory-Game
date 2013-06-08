@@ -53,7 +53,8 @@ window.onload = function () {
     Crafty.scene("loading", function () {
         //load takes an array of assets and a callback when complete
         Crafty.load(["sprite.png","Button1.png","Button1P.png"], function () {
-            Crafty.scene("MainMenu"); //when everything is loaded, run the main scene
+            //when everything is loaded, run the main scene
+			Crafty.scene("MainMenu"); 
         });
 
         Crafty.audio.add("skorpion",["skorpion.wav"]);
@@ -73,7 +74,8 @@ window.onload = function () {
         timesShot=0;
 		recording=false;
 		endDrill();
-        Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 250, y: 150 , z:900 })
+        Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, 
+										 x: 250, y: 150 , z:900 })
             .text(function () { return "Welcome to Muscle Memory Training"})
             .css({'color':"white","text-align":"center"});
 
@@ -83,14 +85,16 @@ window.onload = function () {
 			.bind('Click',function() {Crafty.scene("FreePlay")})
             .areaMap([0,0], [150,0], [150,50], [0,50]);    
 
-		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 250, y: 450 , z:900 })
+		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, 
+												x: 250, y: 450 , z:900 })
             .text(function () { return "Timed Drill"})
             .css({'color':"white","text-align":"center"})
 			.bind('Click',function() {Crafty.scene("Drill")})
 			.areaMap([0,0], [150,0], [150,50], [0,50]);
 
 
-		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, x: 0, y: 600 , z:900 })
+		Crafty.e("2D, DOM, Text, Mouse").attr({ w: 150, h: 50, 
+												x: 0, y: 600 , z:900 })
             .text(function () { return "Sound: "})
             .css({'color':"white","text-align":"center"})
 			.bind('Click',function() {sound=!sound;generateSoundText();})
@@ -102,7 +106,8 @@ window.onload = function () {
 
 	Crafty.scene("DrillResults", function() {
 		timesShot++;
-		Crafty.e("2D, DOM, Text").attr({ w: 170, h: 150, x: 250, y: 150 , z:900 })
+		Crafty.e("2D, DOM, Text").attr({ w: 170, h: 150, 
+										 x: 250, y: 150 , z:900 })
             .text(function () { 
 				return "<p>Drill Results: <br> Hits: "+targetsHit+
 					"<br>Accuracy: "+((targetsHit/timesShot)*100).toFixed(2)
@@ -130,18 +135,24 @@ window.onload = function () {
         for (var i = 0; i < width; i++) {
             for (var j = 0; j < height; j++) {
 				//This creates the "+"
-                if ((i==width/2 && j % 4===0 && j>0) || (j==width/2 && i % 4===0 && i>0) ) {
+                if ((i==width/2 && j % 4===0 && j>0) || 
+					(j==width/2 && i % 4===0 && i>0) ) {
 					console.log("i: "+i+" j: "+j);
 					targetArray[i][j] = Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, def_target")
 						.attr({ x: i * spriteDim, y: j * spriteDim, z: 2 })
-						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+						.areaMap([0,0], [spriteDim,0], 
+								 [spriteDim,spriteDim], [0,spriteDim]);
 				} 
 				
 				//This creates the "x"
-				if ( ((i+j)%8==0) && ((i-j)===0 || ((i+j)===(width)&& i%4==0)) && i>0 && !(i==(width/2)&&j==(height/2))) {
+				if ( ((i+j)%8==0) && 
+					 ((i-j)===0 || 
+					  ((i+j)===(width) && i%4==0)) && 
+					 i>0 && !(i==(width/2)&&j==(height/2))) {
                     targetArray[i][j] = Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, def_target")
 						.attr({ x: i * spriteDim, y: j * spriteDim, z: 2 })
-						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+						.areaMap([0,0], [spriteDim,0], 
+								 [spriteDim,spriteDim], [0,spriteDim]);
 				} 	
 			}
         }
@@ -154,18 +165,24 @@ window.onload = function () {
         for (var i = 0; i < width; i++) {
             for (var j = 0; j < height; j++) {
 				//This creates the "+"
-                if ((i==width/2 && j % 4===0 && j>0) || (j==width/2 && i % 4===0 && i>0) ) {
+                if ((i==width/2 && j % 4===0 && j>0) || 
+					(j==width/2 && i % 4===0 && i>0) ) {
 					console.log("i: "+i+" j: "+j);
 					targetArray[i][j] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, def_target")
 						.attr({ x: i * spriteDim, y: j * spriteDim, z: 2 })
-						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+						.areaMap([0,0], [spriteDim,0], 
+								 [spriteDim,spriteDim], [0,spriteDim]);
                 } 
 				
 				//This creates the "x"
-				if ( ((i+j)%8==0) && ((i-j)===0 || ((i+j)===(width)&& i%4==0)) && i>0 && !(i==(width/2)&&j==(height/2))) {
+				if ( ((i+j)%8==0) && 
+					 ((i-j)===0 || ((i+j)===(width) && 
+									i%4==0)) && i>0 && 
+					 !(i==(width/2)&&j==(height/2))) {
                     targetArray[i][j] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, def_target")
 						.attr({ x: i * spriteDim, y: j * spriteDim, z: 2 })
-						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+						.areaMap([0,0], [spriteDim,0], 
+								 [spriteDim,spriteDim], [0,spriteDim]);
                 } 
             }
         }
@@ -199,8 +216,10 @@ window.onload = function () {
 						//make the center invalid
 						targetArray[width/2][height/2] = 
 							Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, def_target")
-							.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 2 })
-							.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+							.attr({ x: (width/2) * spriteDim, 
+									y: (height/2) * spriteDim, z: 2 })
+							.areaMap([0,0], [spriteDim,0], 
+									 [spriteDim,spriteDim], [0,spriteDim]);
 						
 						Crafty.e("HitDie").attr({ z:9000 }).col(this.col()).row(this.row())
 						
@@ -211,8 +230,10 @@ window.onload = function () {
 						targetArray[i][j].destroy();
 						targetArray[i][j] = 
 							Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
-							.attr({ x: i * spriteDim, y: j * spriteDim, z: 200 })
-							.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+							.attr({ x: i * spriteDim, 
+									y: j * spriteDim, z: 200 })
+							.areaMap([0,0], [spriteDim,0], 
+									 [spriteDim,spriteDim], [0,spriteDim]);
 					} else {
 						if (currentAim===(drillTargets.length-1)) {
 							endDrill();
@@ -228,8 +249,10 @@ window.onload = function () {
 							var oldj = oldtarget[1];
 							targetArray[oldi][oldj].destroy();
 							targetArray[oldi][oldj] = Crafty.e("2D, DOM, solid, InvalidTarget, Mouse, def_target")
-								.attr({ x: oldi * spriteDim, y: oldj * spriteDim, z: 2 })
-								.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+								.attr({ x: oldi * spriteDim, 
+										y: oldj * spriteDim, z: 2 })
+								.areaMap([0,0], [spriteDim,0], 
+										 [spriteDim,spriteDim], [0,spriteDim]);
 							
 							//increment for the next shot
 							currentAim++;
@@ -237,8 +260,10 @@ window.onload = function () {
 							//make the center our current target
 							targetArray[width/2][height/2].destroy();
 							targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
-								.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 2 })
-								.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+								.attr({ x: (width/2) * spriteDim, 
+										y: (height/2) * spriteDim, z: 2 })
+								.areaMap([0,0], [spriteDim,0], 
+										 [spriteDim,spriteDim], [0,spriteDim]);
 						}
 						updateText();
 						Crafty.e("HitDie").attr({ z:9000 }).col(this.col()).row(this.row())
@@ -264,12 +289,14 @@ window.onload = function () {
                     this.destroy();
                     targetsHit++;
                     updateText();})
-                .areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim])
+                .areaMap([0,0], [spriteDim,0], 
+						 [spriteDim,spriteDim], [0,spriteDim])
                 .timeout(function() {
                     this.destroy();
                     Crafty.e("2D, DOM, solid, DefaultTarget, Mouse, def_target")
 						.attr({ z:9000 }).col(this.col()).row(this.row())
-						.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+						.areaMap([0,0], [spriteDim,0], 
+								 [spriteDim,spriteDim], [0,spriteDim]);
                 }, 200);
         }
     });
@@ -282,7 +309,8 @@ window.onload = function () {
                     this.destroy();
                     targetsHit++;
                     updateText();})
-                .areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim])
+                .areaMap([0,0], [spriteDim,0], 
+						 [spriteDim,spriteDim], [0,spriteDim])
                 .timeout(function() {
                     this.destroy();
                 }, 200);
@@ -324,10 +352,12 @@ window.onload = function () {
         resetCounters();
 
 		
-		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 10, y: 10 })
+		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, 
+													  x: 10, y: 10 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});;
-		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, x: 10, y: 50 })
+		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, 
+													  x: 10, y: 50 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});
 		
@@ -356,8 +386,9 @@ window.onload = function () {
 
 
 	Crafty.scene("Drill", function () {
-        Crafty.e("2D, DOM, Text").attr({ w: 350, h: 50, x: 150, y: 150 , z:900 })
-            .text(function () { return "Click below to run a timed drill. For these you want to click the green target. Anything else will be a miss. The faster the time, the better. =]"})
+        Crafty.e("2D, DOM, Text").attr({ w: 350, h: 50, 
+										 x: 150, y: 150 , z:900 })
+            .text(function () { return "Click below to run a timed drill. For these you want to click the green target. Anything else will be a miss. The faster the time, the better."})
             .css({'color':"white","text-align":"center"});
 		
 		Crafty.e("2D, DOM, Text, Mouse")
@@ -402,10 +433,12 @@ window.onload = function () {
 		generateDrillWorld();
 		resetCounters();
 		
-		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 10, y: 10 })
+		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, 
+													  x: 10, y: 10 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});;
-		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, x: 10, y: 50 })
+		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, 
+													  x: 10, y: 50 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});
 		
@@ -427,8 +460,10 @@ window.onload = function () {
 		newTimer();
 		targetArray[width/2][height/2].destroy();
 		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
-			.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 200 })
-			.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+			.attr({ x: (width/2) * spriteDim, 
+					y: (height/2) * spriteDim, z: 200 })
+			.areaMap([0,0], [spriteDim,0], 
+					 [spriteDim,spriteDim], [0,spriteDim]);
         updateText();
 		recording=true;
         document.body.onmousedown = function() {
@@ -447,10 +482,12 @@ window.onload = function () {
 		generateDrillWorld();
 		resetCounters();
 				
-		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 10, y: 10 })
+		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, 
+													  x: 10, y: 10 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});;
-		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, x: 10, y: 50 })
+		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, 
+													  x: 10, y: 50 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});
 
@@ -472,8 +509,10 @@ window.onload = function () {
 		newTimer();
 		targetArray[width/2][height/2].destroy();
 		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
-			.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 200 })
-			.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+			.attr({ x: (width/2) * spriteDim, 
+					y: (height/2) * spriteDim, z: 200 })
+			.areaMap([0,0], [spriteDim,0], 
+					 [spriteDim,spriteDim], [0,spriteDim]);
         updateText();
 		recording=true;
         document.body.onmousedown = function() {
@@ -493,10 +532,12 @@ window.onload = function () {
 		generateDrillWorld();
 		resetCounters();
 				
-		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 10, y: 10 })
+		theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, 
+													  x: 10, y: 10 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});;
-		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, x: 10, y: 50 })
+		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, 
+x: 10, y: 50 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});
 
@@ -518,8 +559,10 @@ window.onload = function () {
 		newTimer();
 		targetArray[width/2][height/2].destroy();
 		targetArray[width/2][height/2] = Crafty.e("2D, DOM, solid, CurrentTarget, Mouse, live_target")
-			.attr({ x: (width/2) * spriteDim, y: (height/2) * spriteDim, z: 200 })
-			.areaMap([0,0], [spriteDim,0], [spriteDim,spriteDim], [0,spriteDim]);
+			.attr({ x: (width/2) * spriteDim, 
+					y: (height/2) * spriteDim, z: 200 })
+			.areaMap([0,0], [spriteDim,0], 
+					 [spriteDim,spriteDim], [0,spriteDim]);
         updateText();
 		recording=true;
         document.body.onmousedown = function() {
@@ -541,10 +584,12 @@ window.onload = function () {
         if (timesShot===0.0) {
             accuracy = 100.0;
         }
-        theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 120, y: 10 , z:200 })
+        theHittext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, 
+													  x: 120, y: 10 , z:200 })
             .text(function () { return "Targets Hit: "+targetsHit})
             .css({"color":"white;"});
-        theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, x: 120, y: 50, z:200})
+        theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, 
+													  x: 120, y: 50, z:200})
             .text(function () { return "Accuracy: "+accuracy})
             .css({"color":"white;"});
     }
@@ -583,11 +628,15 @@ window.onload = function () {
 			soundText.destroy();
 		}
 		if (sound) {
-			soundText = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 50, y: 600 , z:900 })
+			soundText = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, 
+														 x: 50, y: 600 , 
+														 z:900 })
 				.text(function () { return "On"})
 				.css({'color':"white","text-align":"center"})
 		} else {
-			soundText = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, x: 50, y: 600 , z:900 })
+			soundText = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 50, 
+														 x: 50, y: 600, 
+														 z:900 })
 				.text(function () { return "Off"})
 				.css({'color':"white","text-align":"center"})
 		}

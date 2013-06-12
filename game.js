@@ -31,9 +31,15 @@ var drillTargets;
 
 //Drill runs
 var drill1Targets = [[20,16],[16,20],[20,16],[24,20]];
-var drill2Targets = [[20,16],[20,12],[20,8],[20,4],[16,20],[12,20],[8,20],[4,20],[20,24],[20,28],[20,32],[20,36],[24,20],[28,20],[32,20],[36,20]];
-var drill3Targets = [[20,4],[4,20],[20,36],[36,20],[20,4],[4,20],[20,36],[36,20],[20,4],[4,20],[20,36],[36,20],[20,4],[4,20],[20,36],[36,20],[20,4],[4,20],[20,36],[36,20]];
-
+var drill2Targets = [[20,16],[20,12],[20,8],[20,4],
+					 [16,20],[12,20],[8,20],[4,20],
+					 [20,24],[20,28],[20,32],[20,36],
+					 [24,20],[28,20],[32,20],[36,20]];
+var drill3Targets = [[20,4],[4,20],[20,36],[36,20],
+					 [20,4],[4,20],[20,36],[36,20],
+					 [20,4],[4,20],[20,36],[36,20],
+					 [20,4],[4,20],[20,36],[36,20],
+					 [20,4],[4,20],[20,36],[36,20]];
 
 window.onload = function () {
     //start crafty
@@ -48,7 +54,6 @@ window.onload = function () {
         empty: [4, 0]
     });
 
-
     //the loading screen that will display while our assets load
     Crafty.scene("loading", function () {
         //load takes an array of assets and a callback when complete
@@ -56,7 +61,6 @@ window.onload = function () {
             //when everything is loaded, run the main scene
 			Crafty.scene("MainMenu"); 
         });
-
         Crafty.audio.add("skorpion",["skorpion.wav"]);
 
         //black background with some loading text
@@ -102,8 +106,6 @@ window.onload = function () {
 		generateSoundText();
 	});
 
-	
-
 	Crafty.scene("DrillResults", function() {
 		timesShot++;
 		Crafty.e("2D, DOM, Text").attr({ w: 170, h: 150, 
@@ -125,8 +127,6 @@ window.onload = function () {
             .css({'color':"white","text-align":"center"});
 		accuracy=0.0;
 	});
-
-
 
     //method to generate the map
     function generateWorld() {
@@ -537,7 +537,7 @@ window.onload = function () {
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});;
 		theAcctext = Crafty.e("2D, DOM, Text").attr({ w: 150, h: 80, 
-x: 10, y: 50 })
+													  x: 10, y: 50 })
 			.text(function () { return "Targets Hit: "+targetsHit})
 			.css({"color":"white;"});
 
